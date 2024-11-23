@@ -12,6 +12,17 @@ export const findUserById = (userId) => users.find((user) => user._id === userId
 export const findUserByUsername = (username) => users.find((user) => user.username === username);
 export const findUserByCredentials = (username, password) =>
   users.find( (user) => user.username === username && user.password === password );
-export const updateUser = (userId, user) => (users = users.map((u) => (u._id === userId ? user : u)));
+export const updateUser = (userId, userUpdates) => {
+  users = users.map((u) =>
+    u._id === userId ? { ...u, ...userUpdates } : u
+  );
+};
 export const deleteUser = (userId) => (users = users.filter((u) => u._id !== userId));
 
+export const findUsersByCourseId = (courseId) => {
+  const { enrollments } = db;
+  const enrolledUserIds = enrollments
+    .filter((enrollment) => enrollment.course === courseId)
+    .map((enrollment) => enrollment.user);
+  return users.filter((user) => enrolledUserIds.includes(user._id));
+};

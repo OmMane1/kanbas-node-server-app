@@ -6,14 +6,12 @@ export default function CourseRoutes(app) {
     const courses = dao.findAllCourses();
     res.send(courses);
   });
-}
 
-app.delete("/api/courses/:courseId", (req, res) => {
+  app.delete("/api/courses/:courseId", (req, res) => {
     const { courseId } = req.params;
     const status = dao.deleteCourse(courseId);
     res.send(status);
   });
-
 
   app.put("/api/courses/:courseId", (req, res) => {
     const { courseId } = req.params;
@@ -27,6 +25,7 @@ app.delete("/api/courses/:courseId", (req, res) => {
     const modules = modulesDao.findModulesForCourse(courseId);
     res.json(modules);
   });
+
   app.post("/api/courses/:courseId/modules", (req, res) => {
     const { courseId } = req.params;
     const module = {
@@ -36,3 +35,4 @@ app.delete("/api/courses/:courseId", (req, res) => {
     const newModule = modulesDao.createModule(module);
     res.send(newModule);
   });
+}
