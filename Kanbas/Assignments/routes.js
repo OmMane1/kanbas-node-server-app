@@ -7,8 +7,8 @@ export default function AssignmentRoutes(app) {
   });
 
   app.get("/api/assignments/:assignmentId", (req, res) => {
-    const { assignmentId } = req.params; // This will be passed as a string
-    console.log("Assignment ID from route:", assignmentId); // Log to verify
+    const { assignmentId } = req.params; 
+    console.log("Assignment ID from route:", assignmentId); 
     const assignment = dao.findAssignmentById(assignmentId);
     if (!assignment) {
       return res.status(404).send({ message: "Assignment not found" });
@@ -19,9 +19,17 @@ export default function AssignmentRoutes(app) {
   
 
   app.post("/api/assignments", (req, res) => {
-    const newAssignment = dao.createAssignment(req.body);
-    res.status(201).send(newAssignment);
-  });
+    try {
+        const newAssignment = dao.createAssignment(req.body);
+        res.status(201).json(newAssignment); // Ensure correct response status and JSON format
+    } catch (error) {
+        console.error("Error creating assignment:", error.message);
+        res.status(500).json({ message: "Error creating assignment" }); // Send meaningful error message
+    }
+});
+
+
+  
 
   app.put("/api/assignments/:assignmentId", (req, res) => {
     const { assignmentId } = req.params;

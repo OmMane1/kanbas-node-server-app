@@ -5,10 +5,15 @@ export function findAllAssignments() {
 }
 
 export function createAssignment(assignment) {
+  if (!assignment.title || !assignment.course) {
+      throw new Error("Invalid assignment data");
+  }
   const newAssignment = { ...assignment, _id: Date.now().toString() };
   Database.assignments = [...Database.assignments, newAssignment];
   return newAssignment;
 }
+
+
 
 export function findAssignmentById(assignmentId) {
   return Database.assignments.find(
