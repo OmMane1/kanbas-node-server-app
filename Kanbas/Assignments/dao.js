@@ -1,34 +1,20 @@
-import Database from "../Database/index.js";
+import AssignmentModel from './model.js';
 
-export function findAllAssignments() {
-  return Database.assignments;
-}
-
-export function createAssignment(assignment) {
-  if (!assignment.title || !assignment.course) {
-      throw new Error("Invalid assignment data");
-  }
-  const newAssignment = { ...assignment, _id: Date.now().toString() };
-  Database.assignments = [...Database.assignments, newAssignment];
-  return newAssignment;
+export async function createAssignment(assignment) {
+    return await AssignmentModel.create(assignment);
 }
 
 
-
-export function findAssignmentById(assignmentId) {
-  return Database.assignments.find(
-    (assignment) => assignment._id === String(assignmentId)
-  );
+export async function findAssignmentsForCourse(courseId) {
+    return await AssignmentModel.find({ course: courseId });
 }
 
 
-export function updateAssignment(assignmentId, assignmentUpdates) {
-  const assignment = Database.assignments.find((assignment) => assignment._id === assignmentId);
-  if (!assignment) throw new Error("Assignment not found");
-  Object.assign(assignment, assignmentUpdates);
-  return assignment;
+export async function updateAssignment(assignmentId, assignmentUpdates) {
+    return await AssignmentModel.findByIdAndUpdate(assignmentId, assignmentUpdates, { new: true });
 }
 
-export function deleteAssignment(assignmentId) {
-  Database.assignments = Database.assignments.filter((assignment) => assignment._id !== assignmentId);
+
+export async function deleteAssignment(assignmentId) {
+    return await AssignmentModel.findByIdAndDelete(assignmentId);
 }
