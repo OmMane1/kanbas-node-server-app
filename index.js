@@ -21,7 +21,7 @@ app.use(cors({
     origin: [
         process.env.NETLIFY_URL,
         "http://localhost:3000" ,
-        "https://kanbas-react-web-app-cs5610-fa24-a6.netlify.app"
+        "https://om-dev-test--kanbas-react-web-app-cs5610-fa24-om.netlify.app"
     ]
 }));
 const sessionOptions = {
@@ -37,7 +37,9 @@ if (process.env.NODE_ENV !== "development") {
         domain: process.env.NODE_SERVER_DOMAIN,
     };
 }
-
+app.get('/api/health', (req, res) => {
+    res.status(200).send('Server is healthy!');
+});
 app.use(session(sessionOptions));
 
 app.use(express.json());
