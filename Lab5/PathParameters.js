@@ -9,11 +9,19 @@ export default function PathParameters(app) {
       const sum = parseInt(a) - parseInt(b);
       res.send(sum.toString());
     });
-    app.get("/lab5/mulitply/:a/:b", (req, res) => {
-        const { a, b } = req.params;
-        const product = parseInt(a)* parseInt(b);
-        res.send(product.toString());
-      });
+    app.get("/lab5/multiply/:a/:b", (req, res) => {
+      const { a, b } = req.params;
+      const numA = parseInt(a, 10);
+      const numB = parseInt(b, 10);
+  
+      if (isNaN(numA) || isNaN(numB)) {
+          return res.status(400).send("Invalid input: Both parameters should be numbers.");
+      }
+  
+      const product = numA * numB;
+      res.send(product.toString());
+  });
+  
       app.get("/lab5/divide/:a/:b", (req, res) => {
         const { a, b } = req.params;
         if (parseInt(b) === 0) {
