@@ -1,28 +1,35 @@
 import QuestionModel from "./model.js";
+import model from "../model.js";
 
-export const createQuestion = (question) => {
-  return QuestionModel.create(question);
+export const createQuestion = async (question) => {
+  const newQuestion = await QuestionModel.create(question);
+
+  await model.updateOne(
+    { _id: question.quizId },
+    { $inc: { numberOfQuestions: 1 } }
+  );
+
+  return newQuestion;
 };
 
-export const findQuestionsForQuiz = async (quizId) => {
-  console.log("DAO: Searching for questions with quizId:", quizId);
-  try {
-    // First, let's see ALL questions in the database
-    const allQuestions = await QuestionModel.find({});
-    console.log("DAO: ALL Questions in database:", JSON.stringify(allQuestions, null, 2));
-    console.log("DAO: Total questions in database:", allQuestions.length);
 
-    // Now let's see what we get with the filter
+
+export const findQuestionsForQuiz = async (quizId) => {
+  try {
     const questions = await QuestionModel.find({ quizId }).sort({ order: 1 });
-    console.log("DAO: Filtered questions count:", questions.length);
-    console.log("DAO: Filtered Questions:", JSON.stringify(questions, null, 2));
     
+    await model.updateOne(
+      { _id: quizId },
+      { $set: { numberOfQuestions: questions.length } }
+    );
+
     return questions;
   } catch (error) {
     console.error("DAO: Error finding questions:", error);
     throw error;
   }
 };
+
 
 export const findQuestionById = (questionId) => {
   return QuestionModel.findById(questionId);
