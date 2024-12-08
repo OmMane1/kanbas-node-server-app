@@ -1,36 +1,28 @@
 export default function QueryParameters(app) {
+    console.log("Registering calculator route"); // add to see debug
     app.get("/lab5/calculator", (req, res) => {
       const { a, b, operation } = req.query;
-  
-      if (isNaN(a) || isNaN(b)) {
-        return res.status(400).send("Invalid input. Please provide valid numbers for 'a' and 'b'.");
-      }
-  
-      const numA = parseFloat(a);
-      const numB = parseFloat(b);
-      let result;
-  
+      let result = 0;
       switch (operation) {
         case "add":
-          result = numA + numB;
+          result = parseInt(a) + parseInt(b);
           break;
         case "subtract":
-          result = numA - numB;
+          result = parseInt(a) - parseInt(b);
           break;
         case "multiply":
-          result = numA * numB;
+          result = parseInt(a) * parseInt(b);
           break;
         case "divide":
-          if (numB === 0) {
-            return res.status(400).send("Division by zero is not allowed.");
+          if (parseInt(b) === 0) {
+            result = "Cannot divide by zero";
+          } else {
+            result = parseInt(a) / parseInt(b);
           }
-          result = numA / numB;
           break;
         default:
-          result = "Invalid operation. Supported operations are add, subtract, multiply, divide.";
+          result = "Invalid operation";
       }
-  
       res.send(result.toString());
     });
   }
-  
