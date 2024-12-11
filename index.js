@@ -11,9 +11,9 @@ import session from "express-session";
 import ModuleRoutes from './Kanbas/Modules/routes.js';
 import EnrollmentRoutes from "./Kanbas/Enrollments/routes.js";
 import AssignmentRoutes from './Kanbas/Courses/Assignments/routes.js';
-import QuizRoutes from './Kanbas/Courses/Quizzes/routes.js'; 
-import QuizQuestionRoutes from './Kanbas/Courses/Quizzes/QuizQuestions/routes.js';
-import QuizSubmissionRoutes from './Kanbas/Courses/Quizzes/QuizSubmissions/routes.js';
+import QuizRoutes from "./Kanbas/Quizzes/routes.js";
+import QuestionRoutes from "./Kanbas/Quizzes/Questions/routes.js";
+import QuizAnswersRoutes from "./Kanbas/Quizzes/Grades/routes.js";
 
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
@@ -51,8 +51,8 @@ EnrollmentRoutes(app);
 ModuleRoutes(app);
 AssignmentRoutes(app);
 QuizRoutes(app);
-QuizQuestionRoutes(app);
-QuizSubmissionRoutes(app);
+QuestionRoutes(app);
+QuizAnswersRoutes(app);
 
 Hello(app)
 Lab5(app);
